@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<!-- https://github.com/TenderDishes/spyfall -->
+<html lang="de">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>SPY_WIP</title>
+        <style>
+            .background {
+                position: fixed;
+                top: 0;
+                left: 0;
+                height: 100vh;
+                width: 100vw;
+            }
+            loading-overlay {
+                /* use custom variables for internal ShadowDOM component */
+                --loading-overlay-color: black;
+                --loading-overlay-text-shadow: initial;
+            }
+        </style>
+    </head>
+    <body>
+        <!-- using the custom element like every other element = 😎 -->
+        <loading-overlay>
+            Loading...
+        </loading-overlay>
+        <img class="background" src="img/background/vintage_car.jpg"/>
+        <script src="js/customElements/loadingOverlay.js"/>
+        <script type="text/javascript">
+            function GameRoutine() {
+                //"this" is the caller object, a button for example, so save a reference to the class in $this
+                let $this = this;
+                console.log('Start initialisation process...');
+            }
+        </script>
+    </body>
+</html>

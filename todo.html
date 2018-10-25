@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="de">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>SPY_WIP</title>
+    </head>
+    <body>
+        <span>Must be offline available!</span>
+        <br>
+        <span>based on spyfall/"Находка для шпиона" from Alexandr Ushan</span>
+        <br>
+        <span>Frontend:</span>
+        <ul>
+            <li>Locations Overview</li>
+            <li>
+                Start Game
+                <ul>
+                    <li><input type="checkbox"/>Explain Rules</li>
+                    <li><input type="checkbox"/>Set Players</li>
+                    <li><input type="checkbox"/>Set Spy Percentage</li>
+                    <li><input type="checkbox"/>(Set Time)</li>
+                    <li><input type="checkbox"/>every Player gets his role shown (Handy gets passed on)</li>
+                    <li><input type="checkbox"/>(start Timer)</li>
+                </ul>
+            </li>
+            <li>
+                Mid Game
+                <ul>
+                    <input type="checkbox"/>Pause Game (if time is set)
+                    <input type="checkbox"/>Show List of all Locations
+                    <input type="checkbox"/>(End Game)
+                </ul>
+            </li>
+
+            <li>
+                Stop Game
+            </li>
+        </ul>
+        <span>Backend:</span>
+        <ul>
+            <li>add Locations and corresponding Roles</li>
+            <li>one Location to many roles</li>
+        </ul>
+        <br>
+        <span>game storage preferably with server sync func (use cache, fallback to server)</span>
+    </body>
+</html>
