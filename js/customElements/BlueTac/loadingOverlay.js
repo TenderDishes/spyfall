@@ -6,8 +6,8 @@ if (!(window.customElements && document.body.attachShadow)) {
 /*
 class LoadingOverlay defines behaviour of the custom element
 styleHooks:
-    --loading-overlay-color
-    --loading-overlay-text-shadow
+    --bluetac-loading-overlay-color
+    --bluetac-loading-overlay-text-shadow
 */
 class LoadingOverlay extends HTMLElement {
     /*
@@ -21,7 +21,7 @@ class LoadingOverlay extends HTMLElement {
 
     /*
     set disabled attribute
-    params: [string]attributValue
+    params: [string]attributeValue
     returns: -
     note: setter must have one argument
     */
@@ -59,8 +59,8 @@ class LoadingOverlay extends HTMLElement {
                     background-color: rgba(255, 255, 255, 0.66);
                     padding: 10px;
                     box-shadow: 0 0 15px 10px grey;;
-                    color: var(--loading-overlay-color, transparent);
-                    text-shadow: var(--loading-overlay-text-shadow, 0, 0, 0.2px, rgba(0,0,0,0.7));
+                    color: var(--bluetac-loading-overlay-color, transparent);
+                    text-shadow: var(--bluetac-loading-overlay-text-shadow, 0, 0, 0.2px, rgba(0,0,0,0.7));
                 }
             </style>
             <div id="overlay">
@@ -73,10 +73,11 @@ class LoadingOverlay extends HTMLElement {
 
         //when the dom content is loaded
         document.addEventListener('DOMContentLoaded', e => {
+            let $this = this;
             //if attribute disabled is set...
-            if (this.disabled) {
+            if ($this.disabled) {
                 //...hide the overlay and return
-                this.toggleOverlay();
+                $this.toggleOverlay();
                 return;
             }
 
@@ -86,18 +87,29 @@ class LoadingOverlay extends HTMLElement {
             let len = imgs.length;
             let i = 0;
 
+            if (len === 0) {
+                $this.setOverlay(false);
+            }
+
             //foreach image...
-            [].forEach.call(imgs, function(img) {
+            [].forEach.call(imgs, (img) => {
                 //...listen on the load event
-                img.addEventListener('load', () => {
+                img.addEventListener('load', (e) => {
                     //if loading is complete incerement count var
                     i++;
+                    console.log("Image loaded: " + i + "/" + len);
                     //if all images are loaded...
                     if (i===len) {
                         //...hide the loading overlay
-                        document.getElementsByTagName("loading-overlay")[0].toggleOverlay();
+                        $this.setOverlay(false);
                     }
                 }, false);
+
+                //if the image was laready loaded and served from cache...
+                if (img.complete) {
+                    //trigger the load event manually
+                    img.dispatchEvent(new Event('load'));
+                }
             });
         }, false);
     }
@@ -115,6 +127,16 @@ class LoadingOverlay extends HTMLElement {
             overlay.style.display = "none"
         }
     }
+
+    /*
+    sets the overlay
+    params: [bool]value
+    returns: -
+    */
+    setOverlay(value = false) {
+        let overlay = this.shadowRoot.getElementById('overlay');
+        overlay.style.display = (value ? "block" : "none")
+    }
 }
-//define the custom element 'loading-overlay' with the behaviour of the class 'LoadingOverlay'
-window.customElements.define('loading-overlay', LoadingOverlay);
+//define the custom element 'bluetac-loading-overlay' with the behaviour of the class 'LoadingOverlay'
+window.customElements.define('bluetac-loading-overlay', LoadingOverlay);
