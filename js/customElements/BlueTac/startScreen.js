@@ -137,9 +137,16 @@ class StartScreen extends HTMLElement {
                     width: var(--bluetac-button-width, initial);
                     box-shadow: var(--bluetac-button-box-shadow, initial);
                 }
+
+                .center {
+                    position: absolute;
+                    left: 50vw;
+                    top: 50vh;
+                    transform: translate(-50%, -50%);
+                }
             </style>
 
-            <form oninput="timeOutput.value = String( parseInt( time.value ) / 60) + ' Minutes'">
+            <form class="center" oninput="timeOutput.value = String( parseInt( time.value ) / 60) + ' Minutes'">
                 <div class="formSection">
                     <label for="players">Players:</label>
                     <input type="number" value="2" min="2" step="1" name="players"/>

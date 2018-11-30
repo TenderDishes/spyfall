@@ -161,7 +161,7 @@
                 startCountdown() {
                     let child = this.nextPage();
 
-                    if (child !== undefined && child !== false && this.time !== undefined) {
+                    if (child !== undefined && child !== false && this.time !== undefined && this.time !== '0') {
                         child.setAttribute('timelimit', this.time);
                         let slot = child.shadowRoot.querySelector('slot');
                         slot.addEventListener('slotchange', e => {
