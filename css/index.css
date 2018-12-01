@@ -1,0 +1,17 @@
+body {
+    background-color: aliceblue;
+}
+
+bluetac-loading-overlay {
+    /* use custom variables for internal ShadowDOM component */
+    --bluetac-loading-overlay-color: black;
+    --bluetac-loading-overlay-text-shadow: initial;
+}
+
+/* apply general button skin to more custom elements */
+bluetac-game-running, bluetac-start-screen, bluetac-role-assignment, bluetac-end-screen {
+    --bluetac-button-background-color: transparent;
+    --bluetac-button-border: none;
+    --bluetac-button-width: 100%;
+    --bluetac-button-box-shadow: 0 0 5px black;
+}

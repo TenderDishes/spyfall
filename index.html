@@ -5,42 +5,13 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>SPY_WIP</title>
-        <style>
-            body {
-                background-color: aliceblue;
-            }
-
-            .background {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100vw;
-                height: 100vh;
-                z-index: -1;
-            }
-
-            bluetac-loading-overlay {
-                /* use custom variables for internal ShadowDOM component */
-                --bluetac-loading-overlay-color: black;
-                --bluetac-loading-overlay-text-shadow: initial;
-            }
-
-            /* apply general button skin to more custom elements */
-            bluetac-game-running, bluetac-start-screen, bluetac-role-assignment, bluetac-end-screen {
-                --bluetac-button-background-color: transparent;
-                --bluetac-button-border: none;
-                --bluetac-button-width: 100%;
-                --bluetac-button-box-shadow: 0 0 5px black;
-            }
-        </style>
+        <link rel="stylesheet" type="text/css" href="css/index.css" />
     </head>
     <body>
         <!-- using a custom element -->
         <bluetac-loading-overlay>
             Loading...
         </bluetac-loading-overlay>
-
-        <!--img class="background" src="img/background/vintage_car.jpg"></img-->
 
         <!-- load all custom elements -->
         <script src="js/customElements/BlueTac/locationGrid.js"></script>
@@ -49,6 +20,7 @@
         <script src="js/customElements/BlueTac/roleAssignment.js"></script>
         <script src="js/customElements/BlueTac/gameRunning.js"></script>
         <script src="js/customElements/BlueTac/endScreen.js"></script>
+        <script src="js/gameRoutine.js"></script>
 
         <script type="text/javascript">
             'use strict';
@@ -69,116 +41,20 @@
             }
             var logger = new Logger('debug');
 
-            class GameRoutine {
-                constructor() {
-                    logger.log('Start initialisation process...');
-
-                    /* Page Index:
-                        0: Start
-                        1: Role Assignment
-                        2: Discussion
-                    */
-                    this.pages = [
-                        document.createElement('bluetac-start-screen'),
-                        document.createElement('bluetac-role-assignment'),
-                        document.createElement('bluetac-game-running'),
-                        document.createElement('bluetac-end-screen')
-                    ];
-
-                    this.pages[0].shadowRoot.querySelector('button[type=submit]').onclick = (e) => { this.initGame(e) };
-                    this.pages[1].shadowRoot.querySelector('button[type=submit]').onclick = (e) => { this.nextPlayer(e) };
-                    this.pages[2].shadowRoot.querySelector('button[type=submit]').onclick = (e) => { this.nextPage() };
-                    this.pages[3].shadowRoot.querySelector('button[type=submit]').onclick = (e) => { this.nextPage() };
-
-                    this.reset();
-
-                    logger.log('... initialisation process finished.');
-                }
-
-                /*
-                resets variables and append start screen
-                */
-                reset() {
-                    logger.log('reset()');
-                    this.currentPage = 0;
-                    this.players = 0;
-                    this.time = 0;
-                    this.playerIndex = 0;
-
-                    return document.body.appendChild(this.pages[0]);
-                }
-
-                /*
-                switches to the next page in pages array and if the end of the array is reached restart
-                */
-                nextPage() {
-                    logger.log('nextPage()');
-                    document.body.removeChild(this.pages[this.currentPage]);
-
-                    this.currentPage++;
-                    if (this.currentPage < this.pages.length) {
-                        return document.body.appendChild(this.pages[this.currentPage]);
-                    } else {
-                        this.reset();
-                        return false;
-                    }
-                }
-
-                /*
-                initialise game variables
-                */
-                initGame(e) {
-                    //prevent default reload behavior
-                    e.preventDefault();
-                    logger.log('initGame()');
-
-                    let shadowRoot = this.pages[0].shadowRoot;
-                    this.players = shadowRoot.querySelector('input[name=players]').value;
-                    this.time = shadowRoot.querySelector('input[name=time]').value;
-
-                    this.nextPage();
-                }
-
-                /*
-                show the location and role to the next player
-                */
-                nextPlayer(e) {
-                    e.preventDefault();
-                    logger.log('nextPlayer()');
-
-                    this.playerIndex++;
-
-                    if (this.playerIndex >= this.players) {
-                        logger.log('all roles shown');
-                        //pass time for the next elements inner html
-                        this.startCountdown();
-                    }
-                }
-
-                /*
-                main game logic, starts the countdown and checks the time to end the game
-                */
-                startCountdown() {
-                    let child = this.nextPage();
-
-                    if (child !== undefined && child !== false && this.time !== undefined && this.time !== '0') {
-                        child.setAttribute('timelimit', this.time);
-                        let slot = child.shadowRoot.querySelector('slot');
-                        slot.addEventListener('slotchange', e => {
-                          if (child.getAttribute('currentTime') === '0') {
-                              slot.innerHTML = "∞";
-                              child.setAttribute('currentTime', '-');
-                              logger.log("Fertig!");
-                              this.nextPage();
-                          }
-                        });
-                    } else {
-                        console.error("Could not set time on attribute.");
-                    }
-                }
-            }
             let Game = new GameRoutine();
 
+
+            const URL = 'https://bluetac.de/Spyfall/';
+
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', function () {
+                    navigator.serviceWorker.register('/Spyfall/sw.js', {
+                        scope: URL
+                    }).then(registration => {
+                        console.log("Service Worker registration completed ...");
+                    });
+                });
+            }
         </script>
     </body>
 </html>
