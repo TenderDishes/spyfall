@@ -1,0 +1,24 @@
+{
+    "playAreas": [
+        {
+            "name" : "Car Garage",
+            "picture" : "background/vintage_car.jpg",
+            "text" : "Additional Infos",
+            "roles" : [
+                "Mechanic",
+                "Manager",
+                "Customer"
+            ]
+        },
+        {
+            "name" : "Bank",
+            "picture" : "background/vintage_car.jpg",
+            "text" : "Additional Infos",
+            "roles" : [
+                "Banker",
+                "Manager",
+                "Customer"
+            ]
+        }
+    ]
+}

@@ -1,6 +1,11 @@
 class GameRoutine {
-    constructor() {
+    constructor(URL) {
         logger.log('Start initialisation process...');
+
+        this.URL = URL;
+
+        //fetch game data only once and set this.data
+        this.getPlayData();
 
         /* Page Index:
             0: Start
@@ -20,6 +25,15 @@ class GameRoutine {
         this.pages[2].shadowRoot.querySelector('button[type=submit]').onclick = (e) => { this.nextPage() };
         this.pages[3].shadowRoot.querySelector('button[type=submit]').onclick = (e) => { this.nextPage() };
 
+        this.pages[1].shadowRoot.querySelector('#overlay').addEventListener("touchstart", (e) => {
+            e.preventDefault();
+            e.target.style.display = "none";
+        });
+        this.pages[1].shadowRoot.querySelector('#overlay').addEventListener("click", (e) => {
+            e.preventDefault();
+            e.target.style.display = "none";
+        });
+
         this.reset();
 
         logger.log('... initialisation process finished.');
@@ -34,6 +48,8 @@ class GameRoutine {
         this.players = 0;
         this.time = 0;
         this.playerIndex = 0;
+        this.assignedRoles = [];
+        this.currentArea = undefined;
 
         return document.body.appendChild(this.pages[0]);
     }
@@ -61,11 +77,40 @@ class GameRoutine {
         e.preventDefault();
         logger.log('initGame()');
 
-        let shadowRoot = this.pages[0].shadowRoot;
-        this.players = shadowRoot.querySelector('input[name=players]').value;
-        this.time = shadowRoot.querySelector('input[name=time]').value;
+        if(this.data !== undefined) {
+            let playAreas = this.data.playAreas;
+            let shadowRoot = this.pages[0].shadowRoot;
+            let randomNumber = Math.floor(Math.random() * playAreas.length);
 
-        this.nextPage();
+            this.currentArea = playAreas[randomNumber];
+            this.players = shadowRoot.querySelector('input[name=players]').value;
+            this.time = shadowRoot.querySelector('input[name=time]').value;
+
+            this.renderRandomRole();
+
+            this.nextPage();
+        } else {
+            logger.error("Could not gather game data!");
+        }
+    }
+
+    renderRandomRole() {
+        logger.log('renderRandomRole()');
+        let randomRole = Math.floor(Math.random() * this.currentArea.roles.length);
+        if(!this.assignedRoles.includes(randomRole)) {
+            this.assignedRoles.push(randomRole);
+
+            this.pages[1].shadowRoot.querySelector('#overlay').style.display = "block";
+            this.pages[1].innerHTML = `
+                    <img slot="locationImage" src="img/`+this.currentArea.picture+`"/>
+                    <span slot="locationDescription">Location: `+this.currentArea.name+`</span>
+                    <span slot="role">Rolle: `+this.currentArea.roles[randomRole];+`</span>
+            `;
+        } else if (this.assignedRoles.length >= this.currentArea.roles.length) {
+            logger.error("No roles left!");
+        } else {
+            this.renderRandomRole();
+        }
     }
 
     /*
@@ -81,6 +126,8 @@ class GameRoutine {
             logger.log('all roles shown');
             //pass time for the next elements inner html
             this.startCountdown();
+        } else {
+            this.renderRandomRole();
         }
     }
 
@@ -90,19 +137,37 @@ class GameRoutine {
     startCountdown() {
         let child = this.nextPage();
 
-        if (child !== undefined && child !== false && this.time !== undefined && this.time !== '0') {
-            child.setAttribute('timelimit', this.time);
-            let slot = child.shadowRoot.querySelector('slot');
-            slot.addEventListener('slotchange', e => {
-              if (child.getAttribute('currentTime') === '0') {
-                  slot.innerHTML = "∞";
-                  child.setAttribute('currentTime', '-');
-                  logger.log("Fertig!");
-                  this.nextPage();
-              }
-            });
+        if(this.time !== '0') {
+            if (child !== undefined && child !== false && this.time !== undefined) {
+                child.setAttribute('timelimit', this.time);
+                let slot = child.shadowRoot.querySelector('slot');
+                slot.addEventListener('slotchange', e => {
+                  if (child.getAttribute('currentTime') === '0') {
+                      slot.innerHTML = "∞";
+                      child.setAttribute('currentTime', '-');
+                      logger.log("Fertig!");
+                      this.nextPage();
+                  }
+                });
+            } else {
+                logger.error("Could not set time on attribute.");
+            }
         } else {
-            console.error("Could not set time on attribute.");
+            logger.log("No time set");
         }
+    }
+
+    getPlayData() {
+        logger.log("getPlayData()");
+        fetch(this.URL+"data/playAreas.json")
+        .then(response => response.json()) //ransform the data into json
+        .then(response => {
+            this.data = response;
+            //add spy role to all playAreas
+            this.data.playAreas.forEach((value) => {
+                value.roles.push("Spy");
+            })
+        })
+        .catch(error => logger.error('Error:', error));
     }
 }

@@ -61,8 +61,12 @@ class StartScreen extends HTMLElement {
                     -webkit-appearance: none;
                     background-color: white;
                     width: 10px;
+                    height: 10px;
+                    margin-top: -3.6px;
                     border-color: black;
                     border-radius: 0;
+                    border-style: solid;
+                    border-width: 1px;
                     box-shadow: 0 0 5px black;
                     cursor: pointer;
                 }

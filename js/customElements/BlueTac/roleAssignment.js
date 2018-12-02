@@ -52,6 +52,22 @@ class RoleAssignment extends HTMLElement {
                     width: 100%;
                 }
 
+                /* style for img elements wich are in our custom element but not in the shadow dom */
+                ::slotted(img) {
+                    width: 100%;
+                }
+
+                #overlay {
+                    display: block;
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    height: 100vh;
+                    width: 100vw;
+                    z-index: 100;
+                    background-color: black;
+                }
+
                 button[type=submit] {
                     background-color: var(--bluetac-button-background-color, initial);
                     border: var(--bluetac-button-border, initial);
@@ -65,11 +81,12 @@ class RoleAssignment extends HTMLElement {
                 }
             </style>
 
+            <div id="overlay"></div>
             <div class="card">
-                <slot name="location">
+                <slot name="locationImage">
                     <img src="img/background/vintage_car.jpg"/>
                 </slot>
-                <slot name="location">
+                <slot name="locationDescription">
                     <span>Location: Entenhusten</span>
                 </slot>
                 <slot name="role">

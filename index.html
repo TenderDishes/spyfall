@@ -26,11 +26,15 @@
             'use strict';
 
             /*
-            helper class, when removed all logger.log() calls throw an error in the console -> the logging can be removed reliable
+            helper class for logging
             */
             class Logger {
                 constructor(mode) {
                     this.mode = mode;
+                }
+
+                error(variable) {
+                    console.error(variable);
                 }
 
                 log(variable) {
@@ -41,14 +45,13 @@
             }
             var logger = new Logger('debug');
 
-            let Game = new GameRoutine();
-
-
             const URL = 'https://bluetac.de/Spyfall/';
+
+            let Game = new GameRoutine(URL);
 
             if ('serviceWorker' in navigator) {
                 window.addEventListener('load', function () {
-                    navigator.serviceWorker.register('/Spyfall/sw.js', {
+                    navigator.serviceWorker.register(URL+'sw.js', {
                         scope: URL
                     }).then(registration => {
                         console.log("Service Worker registration completed ...");

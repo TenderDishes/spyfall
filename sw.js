@@ -1,5 +1,5 @@
 /* https://blog.angular-university.io/service-workers/ */
-const VERSION = 'v2';
+const VERSION = 'v1';
 
 self.addEventListener('install', event => event.waitUntil(installServiceWorker()));
 async function installServiceWorker() {
@@ -18,6 +18,7 @@ async function installServiceWorker() {
         'https://bluetac.de/Spyfall/js/customElements/BlueTac/gameRunning.js',
         'https://bluetac.de/Spyfall/js/customElements/BlueTac/endScreen.js',
         'https://bluetac.de/Spyfall/img/background/vintage_car.jpg',
+        'https://bluetac.de/Spyfall/data/playAreas.json',
     ]);
 }
 
@@ -34,7 +35,12 @@ async function activateSW(e) {
     });
 }
 
-self.addEventListener('fetch', event => event.respondWith(cacheThenNetwork(event)));
+self.addEventListener('fetch', event => {
+    //respond immediately from cache
+    event.respondWith(cacheThenNetwork(event));
+    //update the cache
+    event.waitUntil(updateCache(event));
+});
 async function cacheThenNetwork(event) {
     const cache = await caches.open(getCacheName());
     const cachedResponse = await cache.match(event.request);
@@ -49,6 +55,14 @@ async function cacheThenNetwork(event) {
     log('Calling network: ' + event.request.url);
 
     return networkResponse;
+}
+function updateCache(event) {
+    const request = event.request;
+    return caches.open(getCacheName()).then(function (cache) {
+        return fetch(request).then(function (response) {
+            return cache.put(request, response);
+        });
+    });
 }
 
 function getCacheName() {
