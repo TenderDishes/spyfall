@@ -92,36 +92,6 @@ class StartScreen extends HTMLElement {
                     height: 2px;
                 }
 
-                /* Styling for IE */
-                /* TODO: Test Styling in IE */
-                input[type=range]::-ms-thumb {
-                    background-color: white;
-                    width: 10px;
-                    border-color: black;
-                    border-radius: 0;
-                    box-shadow: 0 0 5px black;
-                    cursor: pointer;
-                }
-                input[type=range]::-ms-track {
-                    width: 100%;
-                    cursor: pointer;
-                    /* Hides the slider so custom styles can be added */
-                    background: transparent;
-                    border-color: transparent;
-                    color: transparent;
-
-                    background-color: black;
-                    height: 2px;
-                }
-                input[type=range]::-ms-fill-lower,
-                input[type=range]::-ms-fill-upper {
-
-                }
-                input[type=range]:focus::-ms-fill-lower,
-                input[type=range]:focus::-ms-fill-upper {
-
-                }
-
                 form {
                     display: grid;
                     grid-template-columns: 100fr;
@@ -133,6 +103,7 @@ class StartScreen extends HTMLElement {
                     border: none;
                     width: 100%;
                     box-shadow: 0 0 5px black;
+                    padding: 0;
                 }
 
                 button[type=submit] {
@@ -150,10 +121,11 @@ class StartScreen extends HTMLElement {
                 }
             </style>
 
-            <form class="center" oninput="timeOutput.value = String( parseInt( time.value ) / 60) + ' Minutes'">
+            <form oninput="timeOutput.value = String( parseInt( time.value ) / 60) + ' Minutes'">
                 <div class="formSection">
                     <label for="players">Players:</label>
-                    <input type="number" value="2" min="2" step="1" name="players"/>
+                    <!-- set pattern for ios keyboard layout -->
+                    <input type="number" value="2" min="2" step="1" name="players" pattern="\\d*"/>
                 </div>
 
                 <div class="formSection">

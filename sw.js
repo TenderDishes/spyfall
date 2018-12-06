@@ -17,6 +17,7 @@ async function installServiceWorker() {
         'https://bluetac.de/Spyfall/js/customElements/BlueTac/roleAssignment.js',
         'https://bluetac.de/Spyfall/js/customElements/BlueTac/gameRunning.js',
         'https://bluetac.de/Spyfall/js/customElements/BlueTac/endScreen.js',
+        'https://bluetac.de/Spyfall/js/customElements/BlueTac/message.js',
         'https://bluetac.de/Spyfall/img/background/vintage_car.jpg',
         'https://bluetac.de/Spyfall/data/playAreas.json',
     ]);
@@ -46,7 +47,7 @@ async function cacheThenNetwork(event) {
     const cachedResponse = await cache.match(event.request);
 
     if (cachedResponse) {
-        log('Serving From Cache: ' + event.request.url);
+        log('Serving from Cache: ' + event.request.url);
         return cachedResponse;
     }
 
@@ -60,6 +61,7 @@ function updateCache(event) {
     const request = event.request;
     return caches.open(getCacheName()).then(function (cache) {
         return fetch(request).then(function (response) {
+            log('Updating Cache: ' + response.url);
             return cache.put(request, response);
         });
     });

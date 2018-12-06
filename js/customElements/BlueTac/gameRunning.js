@@ -78,8 +78,12 @@ class GameRunning extends HTMLElement {
 
                 .center > .animated {
                     /* source: https://www.w3schools.com/cssref/css3_pr_animation.asp */
-                    /*-webkit-animation: pulse 5s infinite cubic-bezier(.56,0,.47,1.01); /* Safari 4.0 - 8.0 */
-                    /*animation: pulse 5s infinite cubic-bezier(.56,0,.47,1.01);*/
+                    -webkit-animation: pulse 5s infinite cubic-bezier(.56,0,.47,1.01); /* Safari 4.0 - 8.0 */
+                    animation: pulse 5s infinite cubic-bezier(.56,0,.47,1.01);
+                }
+
+                .centerAlign {
+                    text-align: center;
                 }
 
                 /* Safari 4.0 - 8.0 */
@@ -115,8 +119,8 @@ class GameRunning extends HTMLElement {
                 }
             </style>
 
-            <div class="center">
-                <div class="animated">
+            <div>
+                <div class="alignCenter">
                     <p>Find the spy, or the location!</p>
                     <p>Time left: <slot>∞</slot></p>
                 </div>

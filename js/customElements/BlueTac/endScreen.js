@@ -31,6 +31,10 @@ class EndScreen extends HTMLElement {
                     transform: translate(-50%, -50%);
                 }
 
+                .centerAlign {
+                    text-align: center;
+                }
+
                 button[type=submit] {
                     background-color: var(--bluetac-button-background-color, initial);
                     border: var(--bluetac-button-border, initial);
@@ -39,8 +43,8 @@ class EndScreen extends HTMLElement {
                 }
             </style>
 
-            <div class="center">
-                <div>
+            <div>
+                <div class="centerAlign">
                     <p>Fin!</p>
                 </div>
                 <button type="submit">Restart</button>

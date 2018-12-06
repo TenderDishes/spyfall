@@ -20,6 +20,7 @@
         <script src="js/customElements/BlueTac/roleAssignment.js"></script>
         <script src="js/customElements/BlueTac/gameRunning.js"></script>
         <script src="js/customElements/BlueTac/endScreen.js"></script>
+        <script src="js/customElements/BlueTac/message.js"></script>
         <script src="js/gameRoutine.js"></script>
 
         <script type="text/javascript">
@@ -35,6 +36,9 @@
 
                 error(variable) {
                     console.error(variable);
+                    let message = document.body.appendChild(document.createElement('bluetac-message'));
+                    message.setAttribute('type','error');
+                    message.innerHTML = variable;
                 }
 
                 log(variable) {

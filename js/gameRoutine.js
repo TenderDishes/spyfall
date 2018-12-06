@@ -78,13 +78,15 @@ class GameRoutine {
         logger.log('initGame()');
 
         if(this.data !== undefined) {
-            let playAreas = this.data.playAreas;
             let shadowRoot = this.pages[0].shadowRoot;
-            let randomNumber = Math.floor(Math.random() * playAreas.length);
 
-            this.currentArea = playAreas[randomNumber];
             this.players = shadowRoot.querySelector('input[name=players]').value;
             this.time = shadowRoot.querySelector('input[name=time]').value;
+
+            if(!this.setRandomPlayArea()) {
+                logger.error("Could not find a gameArea that have enough playable slots.");
+                return false;
+            }
 
             this.renderRandomRole();
 
@@ -92,6 +94,29 @@ class GameRoutine {
         } else {
             logger.error("Could not gather game data!");
         }
+    }
+
+    setRandomPlayArea() {
+        let availableAreas = [];
+        let playAreas = this.data.playAreas;
+
+        playAreas.forEach((playArea) => {
+            if(playArea.roles.length >= this.players) {
+                availableAreas.push(playArea);
+            }
+        });
+
+        if(availableAreas.length > 0) {
+            while (this.currentArea === undefined) {
+                let randomNumber = Math.floor(Math.random() * playAreas.length);
+                if(this.players <= playAreas[randomNumber].roles.length) {
+                    this.currentArea = playAreas[randomNumber];
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     renderRandomRole() {
@@ -168,6 +193,8 @@ class GameRoutine {
                 value.roles.push("Spy");
             })
         })
-        .catch(error => logger.error('Error:', error));
+        .catch(error => {
+            logger.error(error.message)
+        });
     }
 }
