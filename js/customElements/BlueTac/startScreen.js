@@ -100,10 +100,11 @@ class StartScreen extends HTMLElement {
 
                 input[type=number] {
                     background-color: transparent;
-                    border: none;
-                    width: 100%;
-                    box-shadow: 0 0 5px black;
-                    padding: 0;
+                    border: 1px solid black;
+                    width: calc(100% - 20px);
+                    box-shadow: 0 0 4px black;
+                    padding: 2px 9px;
+                    border-radius: 0;
                 }
 
                 button[type=submit] {
@@ -132,6 +133,10 @@ class StartScreen extends HTMLElement {
                     <label for="time">Time:</label>
                     <output for="time" name="timeOutput">0 Minutes</output>
                     <input type="range" value="0" min="0" max="3600" step="300" name="time"/>
+                </div>
+
+                <div class="formSection">
+                    <label>a Spy in any case:<input type="checkbox" name="forceASpy"></input></label>
                 </div>
 
                 <div class="formSection">

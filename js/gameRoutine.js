@@ -48,6 +48,7 @@ class GameRoutine {
         this.players = 0;
         this.time = 0;
         this.playerIndex = 0;
+        this.forceASpy = false;
         this.assignedRoles = [];
         this.currentArea = undefined;
 
@@ -82,6 +83,7 @@ class GameRoutine {
 
             this.players = shadowRoot.querySelector('input[name=players]').value;
             this.time = shadowRoot.querySelector('input[name=time]').value;
+            this.forceASpy = shadowRoot.querySelector('input[name=forceASpy]').checked;
 
             if(!this.setRandomPlayArea()) {
                 logger.error("Could not find a gameArea that have enough playable slots.");
@@ -96,7 +98,11 @@ class GameRoutine {
         }
     }
 
+    /*
+    sets a random game area that is playable
+    */
     setRandomPlayArea() {
+        logger.log('setRandomPlayArea()');
         let availableAreas = [];
         let playAreas = this.data.playAreas;
 
@@ -119,10 +125,20 @@ class GameRoutine {
         return false;
     }
 
+    /*
+    prepare the custom element to show the next players assignment
+    */
     renderRandomRole() {
         logger.log('renderRandomRole()');
         let randomRole = Math.floor(Math.random() * this.currentArea.roles.length);
         if(!this.assignedRoles.includes(randomRole)) {
+            //if a spy is a must have and there is none within the players -> assign one
+            if(this.forceASpy && this.playerIndex >= this.players-1 && randomRole !== this.currentArea.roles.length-1 && !this.isSpyAssigned()) {
+                //note: not the best solution, because the last player has a higher change to be the spy
+                //https://stackoverflow.com/questions/3983660/probability-in-javascript-help
+                randomRole = this.currentArea.roles.length-1;
+            }
+
             this.assignedRoles.push(randomRole);
 
             this.pages[1].shadowRoot.querySelector('#overlay').style.display = "block";
@@ -148,6 +164,10 @@ class GameRoutine {
         this.playerIndex++;
 
         if (this.playerIndex >= this.players) {
+            if(this.forceASpy && !this.isSpyAssigned()) {
+                logger.error('No Spy assigned');
+            }
+
             logger.log('all roles shown');
             //pass time for the next elements inner html
             this.startCountdown();
@@ -157,9 +177,25 @@ class GameRoutine {
     }
 
     /*
+    checks if a spy is already assigned
+    */
+    isSpyAssigned() {
+        let roles = [];
+        this.assignedRoles.forEach((value) => {
+            roles.push(this.currentArea.roles[value]);
+        });
+
+        if(roles.includes('Spy')) {
+            return true;
+        }
+        return false;
+    }
+
+    /*
     main game logic, starts the countdown and checks the time to end the game
     */
     startCountdown() {
+        logger.log('startCountdown()');
         let child = this.nextPage();
 
         if(this.time !== '0') {
@@ -182,6 +218,9 @@ class GameRoutine {
         }
     }
 
+    /*
+    fetch the player data from server asynchronous in order to update the game data every time
+    */
     getPlayData() {
         logger.log("getPlayData()");
         fetch(this.URL+"data/playAreas.json")
