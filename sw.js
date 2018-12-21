@@ -18,8 +18,11 @@ async function installServiceWorker() {
         'https://bluetac.de/Spyfall/js/customElements/BlueTac/gameRunning.js',
         'https://bluetac.de/Spyfall/js/customElements/BlueTac/endScreen.js',
         'https://bluetac.de/Spyfall/js/customElements/BlueTac/message.js',
-        'https://bluetac.de/Spyfall/img/background/vintage_car.jpg',
+        'https://bluetac.de/Spyfall/img/jake-kay-bank-vault-door.jpg',
+        'https://bluetac.de/Spyfall/img/garage_by_gregmks-d64ydjo.jpg',
+        'https://bluetac.de/Spyfall/img/homer_spy.jpeg',
         'https://bluetac.de/Spyfall/data/playAreas.json',
+        'https://bluetac.de/Spyfall/sounds/alarm_beep.wav',
     ]);
 }
 

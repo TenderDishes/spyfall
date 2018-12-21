@@ -5,13 +5,18 @@ class GameRoutine {
         this.URL = URL;
 
         //fetch game data only once and set this.data
-        this.getPlayData();
+        this.getPlayData().then(() => {
+            //start the rendering when the game data is fetched successfully
+            this.reset();
+
+            this.renderMessage('Max Players: '+this.getMaxPlayers());
+        });
 
         /* Page Index:
             0: Start
             1: Role Assignment
             2: Discussion
-            3: EndScreen
+            3: End
         */
         this.pages = [
             document.createElement('bluetac-start-screen'),
@@ -34,7 +39,15 @@ class GameRoutine {
             e.target.style.display = "none";
         });
 
-        this.reset();
+        let audioTag = document.createElement('audio');
+        audioTag.autoplay = false;
+        audioTag.controls = false;
+        audioTag.loop = false;
+        audioTag.muted = false;
+        audioTag.preload = "auto";
+        audioTag.src = "sounds/alarm_beep.wav";
+        audioTag.volume = 1;
+        this.audio = document.body.appendChild(audioTag);
 
         logger.log('... initialisation process finished.');
     }
@@ -142,11 +155,19 @@ class GameRoutine {
             this.assignedRoles.push(randomRole);
 
             this.pages[1].shadowRoot.querySelector('#overlay').style.display = "block";
-            this.pages[1].innerHTML = `
-                    <img slot="locationImage" src="img/`+this.currentArea.picture+`"/>
-                    <span slot="locationDescription">Location: `+this.currentArea.name+`</span>
-                    <span slot="role">Rolle: `+this.currentArea.roles[randomRole];+`</span>
-            `;
+            if(randomRole !== this.currentArea.roles.length-1) {
+                this.pages[1].innerHTML = `
+                        <img slot="locationImage" src="img/`+this.currentArea.picture+`"/>
+                        <span slot="locationDescription">Location: `+this.currentArea.name+`</span>
+                        <span slot="role">Rolle: `+this.currentArea.roles[randomRole];+`</span>
+                `;
+            } else {
+                this.pages[1].innerHTML = `
+                        <img slot="locationImage" src="img/`+this.data.spy.picture+`"/>
+                        <span slot="locationDescription">Location: unknown</span>
+                        <span slot="role">Rolle: `+this.currentArea.roles[randomRole];+`</span>
+                `;
+            }
         } else if (this.assignedRoles.length >= this.currentArea.roles.length) {
             logger.error("No roles left!");
         } else {
@@ -206,7 +227,8 @@ class GameRoutine {
                   if (child.getAttribute('currentTime') === '0') {
                       slot.innerHTML = "∞";
                       child.setAttribute('currentTime', '-');
-                      logger.log("Fertig!");
+                      this.audio.play();
+                      logger.log("Time is up!");
                       this.nextPage();
                   }
                 });
@@ -223,7 +245,7 @@ class GameRoutine {
     */
     getPlayData() {
         logger.log("getPlayData()");
-        fetch(this.URL+"data/playAreas.json")
+        return fetch(this.URL+"data/playAreas.json")
         .then(response => response.json()) //ransform the data into json
         .then(response => {
             this.data = response;
@@ -235,5 +257,24 @@ class GameRoutine {
         .catch(error => {
             logger.error(error.message)
         });
+    }
+
+    /*
+    returns the maximal available players for the given game data
+    */
+    getMaxPlayers() {
+        let maxPlayers = 0;
+        this.data.playAreas.forEach((playArea) => {
+            if(playArea.roles.length > maxPlayers) {
+                maxPlayers = playArea.roles.length;
+            }
+        });
+        return maxPlayers;
+    }
+
+    renderMessage(variable) {
+        let message = document.body.appendChild(document.createElement('bluetac-message'));
+        message.setAttribute('type','info');
+        message.innerHTML = variable;
     }
 }

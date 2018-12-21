@@ -1,8 +1,11 @@
 {
+    "spy": {
+        "picture": "homer_spy.jpeg"
+    },
     "playAreas": [
         {
             "name" : "Car Garage",
-            "picture" : "background/vintage_car.jpg",
+            "picture" : "garage_by_gregmks-d64ydjo.jpg",
             "text" : "Additional Infos",
             "roles" : [
                 "Mechanic",
@@ -12,7 +15,7 @@
         },
         {
             "name" : "Bank",
-            "picture" : "background/vintage_car.jpg",
+            "picture" : "jake-kay-bank-vault-door.jpg",
             "text" : "Additional Infos",
             "roles" : [
                 "Banker",

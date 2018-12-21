@@ -48,13 +48,10 @@ class RoleAssignment extends HTMLElement {
                     grid-template-rows: 1fr 1rem 1rem 2rem;
                 }
 
-                .card img {
-                    width: 100%;
-                }
-
                 /* style for img elements wich are in our custom element but not in the shadow dom */
-                ::slotted(img) {
-                    width: 100%;
+                .card img, ::slotted(img) {
+                    max-width: 100%;
+                    max-height: 200px;
                 }
 
                 #overlay {
