@@ -1,5 +1,5 @@
 /* https://blog.angular-university.io/service-workers/ */
-const VERSION = 'v1';
+const VERSION = 'v4';
 
 self.addEventListener('install', event => event.waitUntil(installServiceWorker()));
 async function installServiceWorker() {
@@ -21,6 +21,10 @@ async function installServiceWorker() {
         'https://bluetac.de/Spyfall/img/jake-kay-bank-vault-door.jpg',
         'https://bluetac.de/Spyfall/img/garage_by_gregmks-d64ydjo.jpg',
         'https://bluetac.de/Spyfall/img/homer_spy.jpeg',
+        'https://bluetac.de/Spyfall/img/titanic.jpg',
+        'https://bluetac.de/Spyfall/img/city_shop.jpg',
+        'https://bluetac.de/Spyfall/img/polar_science.jpg',
+        'https://bluetac.de/Spyfall/img/school.jpg',
         'https://bluetac.de/Spyfall/data/playAreas.json',
         'https://bluetac.de/Spyfall/sounds/alarm_beep.wav',
     ]);

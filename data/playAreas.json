@@ -4,13 +4,27 @@
     },
     "playAreas": [
         {
-            "name" : "Car Garage",
+            "name" : "Autowerkstatt",
             "picture" : "garage_by_gregmks-d64ydjo.jpg",
             "text" : "Additional Infos",
             "roles" : [
-                "Mechanic",
+                "Mechaniker",
                 "Manager",
-                "Customer"
+                "Kunde",
+                "Verkäufer",
+                "Plegefachkraft"
+            ]
+        },
+        {
+            "name" : "Kreuzfahrtschiff",
+            "picture" : "titanic.jpg",
+            "text" : "Additional Infos",
+            "roles" : [
+                "Captain",
+                "Barkeeper",
+                "Urlauber",
+                "Techniker",
+                "Pflegefachkraft"
             ]
         },
         {
@@ -18,9 +32,109 @@
             "picture" : "jake-kay-bank-vault-door.jpg",
             "text" : "Additional Infos",
             "roles" : [
-                "Banker",
+                "Bänker",
                 "Manager",
-                "Customer"
+                "Bankräuber",
+                "Bewaffnete Sicherheitskraft",
+                "Kunde"
+            ]
+        },
+        {
+            "name" : "Einkaufscenter",
+            "picture" : "city_shop.jpg",
+            "text" : "Additional Infos",
+            "roles" : [
+                "Verkäufer",
+                "Manager",
+                "Kunde",
+                "Sicherheitskraft",
+                "Hausmeister"
+            ]
+        },
+        {
+            "name" : "Polare Forschungsstation",
+            "picture" : "polar_science.jpg",
+            "text" : "Additional Infos",
+            "roles" : [
+                "Forscher",
+                "Techniker",
+                "Pilot",
+                "Analyst",
+                "Koch"
+            ]
+        },
+        {
+            "name" : "Schule",
+            "picture" : "school.jpg",
+            "text" : "Additional Infos",
+            "roles" : [
+                "Schüler",
+                "Lehrer",
+                "Hausmeister",
+                "Schulleiter",
+                "Referendar"
+            ]
+        },
+        {
+            "name" : "Bordell",
+            "picture" : "TODO",
+            "text" : "Additional Infos",
+            "roles" : [
+                "Managerin",
+                "Prostituierte",
+                "Hausmeister",
+                "Sicherheitskraft",
+                "Kunde",
+                "Barkeeper"
+            ]
+        },
+        {
+            "name" : "Universitaet",
+            "picture" : "TODO",
+            "text" : "Additional Infos",
+            "roles" : [
+                "Professor",
+                "Student",
+                "Hausmeister",
+                "Dozent",
+                "Sekreterin"
+            ]
+        },
+        {
+            "name" : "Baumarkt",
+            "picture" : "TODO",
+            "text" : "Additional Infos",
+            "roles" : [
+                "Verküfer",
+                "Fachleiter",
+                "Hausmeister",
+                "Manager",
+                "Kunde"
+            ]
+        },
+        {
+            "name" : "U-Boot",
+            "picture" : "TODO",
+            "text" : "Additional Infos",
+            "roles" : [
+                "Funker",
+                "Kapitän",
+                "Waffenmeister",
+                "Maschinist",
+                "Matrose"
+            ]
+        },
+        {
+            "name" : "Flugzeug",
+            "picture" : "TODO",
+            "text" : "Additional Infos",
+            "roles" : [
+                "Pilot",
+                "Co-Pilot",
+                "Stewardes",
+                "Passagier",
+                "Kind",
+                "Terrorist"
             ]
         }
     ]
